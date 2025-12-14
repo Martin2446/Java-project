@@ -1,6 +1,6 @@
 package com.example.project.mapper;
 
-import com.example.project.dto.*;
+import com.example.project.dto.employee.*;
 import com.example.project.model.Employee;
 import com.example.project.repository.projection.EmployeeNameProjection;
 import org.mapstruct.*;

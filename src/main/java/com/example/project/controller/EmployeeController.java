@@ -1,14 +1,13 @@
 package com.example.project.controller;
 
-import com.example.project.dto.EmployeeRequestDTO;
-import com.example.project.dto.EmployeeResponseDTO;
+import com.example.project.dto.employee.EmployeeRequestDTO;
+import com.example.project.dto.employee.EmployeeResponseDTO;
 import com.example.project.mapper.EmployeeMapper;
 import com.example.project.model.Employee;
 import com.example.project.service.EmployeeService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

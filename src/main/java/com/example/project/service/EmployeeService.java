@@ -1,12 +1,11 @@
 package com.example.project.service;
 
 import com.example.project.controller.EmployeeController;
-import com.example.project.dto.EmployeeRequestDTO;
+import com.example.project.dto.employee.EmployeeRequestDTO;
 import com.example.project.mapper.EmployeeMapper;
 import com.example.project.model.Employee;
 import com.example.project.repository.EmployeeRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

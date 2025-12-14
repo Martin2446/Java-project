@@ -1,4 +1,4 @@
-package com.example.project.dto;
+package com.example.project.dto.employee;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -14,8 +14,6 @@ public record EmployeeRequestDTO(
         @Size(min = 2, max = 20, message = "Employee last name must be between 2 and 20 characters")
         String lastName,
 
-//        @Pattern(regexp = ".*\\S.*", message = "If phone number is provided, it must not be blank")
-//        @Size(min = 10, max = 10, message = "Phone Number should be exactly 10 digits")
         @Pattern(regexp = "\\d{10}", message = "If phone number is provided, it must be exactly 10 digits")
         String phoneNumber,
 
@@ -23,14 +21,9 @@ public record EmployeeRequestDTO(
         String departmentName
 ) {
     public EmployeeRequestDTO {
-        firstName = safeTrim(firstName);
-        lastName = safeTrim(lastName);
-        phoneNumber = safeTrim(phoneNumber);
-        departmentName = safeTrim(departmentName);
+        firstName = firstName.trim();
+        lastName = lastName.trim();
+        phoneNumber = phoneNumber.trim();
+        departmentName = departmentName.trim();
     }
-
-    private String safeTrim(String str) {
-        return str != null ? str.trim() : null;
-    }
-
 }
