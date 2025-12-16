@@ -17,7 +17,6 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class EmployeeService {
 
-    private final EmployeeController employeeController;
     private final EmployeeMapper employeeMapper;
     private final EmployeeRepository employeeRepository;
 
