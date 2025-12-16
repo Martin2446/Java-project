@@ -10,13 +10,12 @@ public record ProductRequestDTO (
     @Size(min = 2, max = 40, message = "Product name must be between 2 and 40 characters")
     String name,
 
-    @NotBlank(message = "Product price cannot be null or empty")
+    //@NotBlank(message = "Product price cannot be null or empty")
     @Positive(message = "product price must be a positive number")
     double price
 ) {
     public ProductRequestDTO
     {
         name = name.trim();
-        price = price;
     }
 }

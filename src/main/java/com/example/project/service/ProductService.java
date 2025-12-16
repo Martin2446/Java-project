@@ -5,9 +5,13 @@ import com.example.project.dto.product.ProductRequestDTO;
 import com.example.project.mapper.ProductMapper;
 import com.example.project.model.Product;
 import com.example.project.repository.ProductRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,5 +26,19 @@ public class ProductService {
     {
         Product product = productMapper.toProduct(productRequestDTO);
         return productRepository.save(product);
+    }
+
+    public List<Product> getAllProducts()
+    {
+        return productRepository.findAll();
+    }
+
+    @Transactional
+    public void deleteProduct(Long id)
+    {
+        if(productRepository.existsById(id))
+            productRepository.deleteById(id);
+        else
+            throw new EntityNotFoundException("Product with id " + id + " does not  exist!");
     }
 }

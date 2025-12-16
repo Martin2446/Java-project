@@ -38,6 +38,6 @@ public class EmployeeService {
         if(employeeRepository.existsById(id))
             employeeRepository.deleteById(id);
         else
-            throw new EntityNotFoundException("Employee by this id" + id + "does not  exist!");
+            throw new EntityNotFoundException("Employee with id " + id + " does not  exist!");
     }
 }

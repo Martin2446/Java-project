@@ -6,14 +6,14 @@ import com.example.project.mapper.ProductMapper;
 import com.example.project.model.Product;
 import com.example.project.service.ProductService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/products")
@@ -29,5 +29,18 @@ public class ProductController {
     {
         Product addProduct = productService.addProduct(productRequestDTO);
         return new ResponseEntity<>(productMapper.toProductResponseDTO(addProduct), HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductResponseDTO>> getAllProducts()
+    {
+        return new ResponseEntity<>(productMapper.toProductResponseDTOList(productService.getAllProducts()), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable @Positive Long id)
+    {
+        productService.deleteProduct(id);
+        return ResponseEntity.noContent().build();
     }
 }

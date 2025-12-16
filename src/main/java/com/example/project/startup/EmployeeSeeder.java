@@ -34,6 +34,6 @@ public class EmployeeSeeder implements CommandLineRunner {
         employeeRepository.save(employee1);
         employeeRepository.save(employee2);
 
-        System.out.println(" 2 Employees were seeded!");
+        System.out.println("2 Employees were seeded!");
     }
 }

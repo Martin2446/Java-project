@@ -35,7 +35,7 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeMapper.toEmployeeResponseDTOList(employeeService.getAllEmployees()), HttpStatus.OK);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable @Positive Long id)
     {
         employeeService.deleteEmployee(id);
