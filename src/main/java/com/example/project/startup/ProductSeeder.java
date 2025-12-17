@@ -1,6 +1,7 @@
 package com.example.project.startup;
 
 import com.example.project.model.Product;
+import com.example.project.repository.OrderRepository;
 import com.example.project.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 public class ProductSeeder implements CommandLineRunner{
 
     private final ProductRepository productRepository;
+    private final OrderRepository orderRepository;
 
     @Override
     public void run(String... args) throws Exception
