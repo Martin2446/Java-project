@@ -4,12 +4,14 @@ import com.example.project.dto.order.OrderRequestDTO;
 import com.example.project.mapper.OrderMapper;
 import com.example.project.model.Order;
 import com.example.project.repository.OrderRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +22,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     @Transactional
-    public Order addOrder(OrderRequestDTO orderRequestDTO)
+    public Order saveOrder(OrderRequestDTO orderRequestDTO)
     {
         Order order = orderMapper.toOrder(orderRequestDTO);
         return orderRepository.save(order);
@@ -31,9 +33,17 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
-    public Order getOrderByAddressOrCreate(String address)
+    @Transactional
+    public void deleteOrder(@Positive Long id)
     {
-        Optional<Order> fetchedAddress = orderRepository.findByAddress(address);
-        return fetchedAddress.orElseGet(() -> orderRepository.save(new Order()));
+        if(orderRepository.existsById(id))
+            orderRepository.deleteById(id);
+        else
+            throw new EntityNotFoundException("Order with id " + id + " does not exist!");
+    }
+
+    public Order getOrderByAddressOrThrow(String orderAddress)
+    {
+        return orderRepository.findByAddress(orderAddress).orElseThrow(() -> new EntityNotFoundException("Order with address " + orderAddress + " does not exist!"));
     }
 }

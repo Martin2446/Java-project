@@ -12,7 +12,7 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ProductMapper {
 
-    @Mapping(target = "deliveryAddress", source = "orders.address")
+    @Mapping(target = "id")
     ProductResponseDTO toProductResponseDTO(Product product);
 
     List<ProductResponseDTO> toProductResponseDTOList(List<Product> products);

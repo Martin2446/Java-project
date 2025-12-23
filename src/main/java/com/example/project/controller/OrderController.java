@@ -6,6 +6,7 @@ import com.example.project.mapper.OrderMapper;
 import com.example.project.model.Order;
 import com.example.project.service.OrderService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +25,9 @@ public class OrderController {
     private final OrderMapper orderMapper;
 
     @PostMapping
-    public ResponseEntity<OrderResponseDTO> addOrder(@Valid @RequestBody OrderRequestDTO orderRequestDTO)
+    public ResponseEntity<OrderResponseDTO> saveOrder(@Valid @RequestBody OrderRequestDTO orderRequestDTO)
     {
-        Order addOrder = orderService.addOrder(orderRequestDTO);
+        Order addOrder = orderService.saveOrder(orderRequestDTO);
         return new ResponseEntity<>(orderMapper.toOrderResponseDTO(addOrder), HttpStatus.OK);
     }
 
@@ -34,5 +35,12 @@ public class OrderController {
     public ResponseEntity<List<OrderResponseDTO>> getAllOrders()
     {
         return new ResponseEntity<>(orderMapper.toOrderResponseDTOList(orderService.getAllOrders()), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable @Positive Long id)
+    {
+        orderService.deleteOrder(id);
+        return ResponseEntity.noContent().build();
     }
 }

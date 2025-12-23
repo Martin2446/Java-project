@@ -6,6 +6,7 @@ import com.example.project.model.Order;
 import com.example.project.model.Product;
 import com.example.project.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,16 +23,9 @@ public class ProductService {
     private final OrderService orderService;
 
     @Transactional
-    public Product addProduct(ProductRequestDTO productRequestDTO)
+    public Product saveProduct(ProductRequestDTO productRequestDTO)
     {
-        String requestDeliveryAddress = productRequestDTO.deliveryAddress();
         Product product = productMapper.toProduct(productRequestDTO);
-
-        if(requestDeliveryAddress != null)
-        {
-            Order order = orderService.getOrderByAddressOrCreate(requestDeliveryAddress);
-            product.setOrders(order);
-        }
 
         return productRepository.save(product);
     }
@@ -48,5 +42,22 @@ public class ProductService {
             productRepository.deleteById(id);
         else
             throw new EntityNotFoundException("Product with id " + id + " does not  exist!");
+    }
+
+    public Product getProductByIdOrThrow(Long id)
+    {
+        return productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Product with id " + id + " does not exist!"));
+    }
+
+    @Transactional
+    public Product addProductToOrder(@Positive Long productId, String orderAddress)
+    {
+        Product product = getProductByIdOrThrow(productId);
+        Order order = orderService.getOrderByAddressOrThrow(orderAddress);
+
+        product.getOrders().add(order);
+        order.getProducts().add(product);
+
+        return productRepository.save(product);
     }
 }

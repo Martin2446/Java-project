@@ -3,7 +3,8 @@ package com.example.project.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "products")
@@ -18,12 +19,12 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name",unique = true, nullable = false)
     private String name;
 
     @Column(name = "price", nullable = false)
     private double price;
 
-    @ManyToOne
-    private Order orders;
+    @ManyToMany(mappedBy = "products")
+    private Set<Order> orders = new HashSet<>();
 }

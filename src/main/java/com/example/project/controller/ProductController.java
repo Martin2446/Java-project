@@ -25,9 +25,9 @@ public class ProductController {
     private final ProductMapper productMapper;
 
     @PostMapping
-    public ResponseEntity<ProductResponseDTO> addProduct(@Valid @RequestBody ProductRequestDTO productRequestDTO)
+    public ResponseEntity<ProductResponseDTO> saveProduct(@Valid @RequestBody ProductRequestDTO productRequestDTO)
     {
-        Product addProduct = productService.addProduct(productRequestDTO);
+        Product addProduct = productService.saveProduct(productRequestDTO);
         return new ResponseEntity<>(productMapper.toProductResponseDTO(addProduct), HttpStatus.CREATED);
     }
 
@@ -42,5 +42,13 @@ public class ProductController {
     {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{productId}/order/{orderAddress}")
+    public ResponseEntity<ProductResponseDTO> addProductToOrder(@PathVariable @Positive Long productId,
+                                                                @PathVariable String orderAddress)
+    {
+        Product product = productService.addProductToOrder(productId, orderAddress);
+        return new ResponseEntity<>(productMapper.toProductResponseDTO(product), HttpStatus.OK);
     }
 }

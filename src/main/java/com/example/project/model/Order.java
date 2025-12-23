@@ -3,7 +3,8 @@ package com.example.project.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "orders")
@@ -15,11 +16,11 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderId;
+    private Long id;
 
-    @ManyToMany(mappedBy = "orders")
-    private List<Product> products;
+    @ManyToMany
+    private Set<Product> products = new HashSet<>();
 
-    @NonNull
+    @Column(unique = true, nullable = false)
     private String address;
 }

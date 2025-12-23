@@ -12,11 +12,12 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface OrderMapper {
 
+    @Mapping(target = "products", source = "products")
     OrderResponseDTO toOrderResponseDTO(Order order);
 
     List<OrderResponseDTO> toOrderResponseDTOList(List<Order> orders);
 
-    @Mapping(target = "orderId", ignore = true)
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "products", ignore = true)
     Order toOrder(OrderRequestDTO orderRequestDTO);
 }
