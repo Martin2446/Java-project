@@ -24,12 +24,6 @@ public class EmployeeController {
     private final EmployeeService employeeService;
     private final EmployeeMapper employeeMapper;
 
-    @PostMapping
-    public ResponseEntity<EmployeeResponseDTO> saveEmployee(@Valid @RequestBody EmployeeRequestDTO employeeRequestDTO) {
-        Employee savedEmployee = employeeService.saveEmployee(employeeRequestDTO);
-        return new ResponseEntity<>(employeeMapper.toEmployeeResponseDTO(savedEmployee), HttpStatus.CREATED);
-    }
-
     @GetMapping
     public ResponseEntity<List<EmployeeResponseDTO>> getAllEmployees() {
         return new ResponseEntity<>(employeeMapper.toEmployeeResponseDTOList(employeeService.getAllEmployees()), HttpStatus.OK);

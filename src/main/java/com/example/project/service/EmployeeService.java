@@ -21,11 +21,6 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     @Transactional
-    public Employee saveEmployee(EmployeeRequestDTO employeeRequestDTO)
-    {
-        Employee employee = employeeMapper.toEmployee(employeeRequestDTO);
-        return employeeRepository.save(employee);
-    }
 
     public List<Employee> getAllEmployees()
     {
