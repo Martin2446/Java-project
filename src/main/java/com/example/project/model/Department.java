@@ -22,7 +22,5 @@ public class Department {
     @Column(unique = true, nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "department")
-    private Set<Employee> employees = new HashSet<>();
 
 }
