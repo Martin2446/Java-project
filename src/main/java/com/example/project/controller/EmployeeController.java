@@ -29,6 +29,16 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeMapper.toEmployeeResponseDTOList(employeeService.getAllEmployees()), HttpStatus.OK);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<EmployeeResponseDTO> updateEmployee(
+            @PathVariable @Positive Long id,
+            @Valid @RequestBody EmployeeRequestDTO dto) {
+
+        Employee updatedEmployee = employeeService.updateEmployee(id, dto);
+
+        return ResponseEntity.ok(employeeMapper.toEmployeeResponseDTO(updatedEmployee));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable @Positive Long id)
     {
