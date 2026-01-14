@@ -26,5 +26,20 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private Employee employee;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+    @PrePersist
+    @PreUpdate
+    private void validateExclusiveProfile() {
+        if (employee != null && customer != null) {
+            throw new IllegalStateException("Security Violation: A User cannot be both an Employee and a Customer.");
+        }
+        if (employee == null && customer == null) {
+            throw new IllegalStateException("Data Error: A User must be linked to either an Employee or a Customer profile.");
+        }
+    }
 }
 

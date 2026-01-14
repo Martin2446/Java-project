@@ -5,6 +5,7 @@ import com.example.project.model.*;
 import com.example.project.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ public class AdminService {
     private final UserRepository userRepository;
     private final DepartmentRepository departmentRepository;
     private final EmployeeRepository employeeRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public void registerStaff(AdminRegistrationDTO dto) {
@@ -30,7 +32,7 @@ public class AdminService {
 
         User newUser = new User();
         newUser.setUsername(dto.username());
-        newUser.setPassword(dto.password()); // Later we will learn to "encrypt" this
+        newUser.setPassword(passwordEncoder.encode(dto.password()));
         newUser.setEmployee(newEmployee);
 
         if (dept.getName().equalsIgnoreCase("WAREHOUSE")) {
