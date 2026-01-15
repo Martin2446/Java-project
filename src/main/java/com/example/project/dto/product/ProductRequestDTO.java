@@ -13,7 +13,9 @@ public record ProductRequestDTO(
 
     @NonNull
     @Positive(message = "product price must be a positive number")
-    double price
+    double price,
+
+    int amount
 ) {
     public ProductRequestDTO
     {

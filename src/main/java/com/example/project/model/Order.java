@@ -3,7 +3,9 @@ package com.example.project.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -19,7 +21,7 @@ public class Order {
     private Long id;
 
     @ManyToMany
-    private Set<Product> products = new HashSet<>();
+    private List<Product> products = new ArrayList<>();
 
     @Column(unique = true, nullable = false)
     private String address;

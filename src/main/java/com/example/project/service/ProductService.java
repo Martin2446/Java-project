@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +30,19 @@ public class ProductService {
 
         return productRepository.save(product);
     }
+
+    @Transactional
+    public Product updateProduct(Long id, ProductRequestDTO dto)
+    {
+        Product fetchedProduct = productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Product not found"));
+
+        fetchedProduct.setPrice(dto.price());
+        fetchedProduct.setName(dto.name());
+        fetchedProduct.setAmount(dto.amount());
+
+        return productRepository.save(fetchedProduct);
+    }
+
 
     public List<Product> getAllProducts()
     {

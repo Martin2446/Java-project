@@ -24,6 +24,7 @@ public class ProductSeeder implements CommandLineRunner{
         Product product1 = Product.builder()
                 .name("Dress")
                 .price(45.00)
+                .amount(50)
                 .build();
 
         productRepository.save(product1);

@@ -1,8 +1,7 @@
 package com.example.project.dto.product;
 
-public record ProductResponseDTO (
+public record ProductSummaryResponseDTO (
     Long id,
     String name,
-    double price,
-    int amount
+    double price
 ) {}

@@ -1,8 +1,11 @@
 package com.example.project.controller;
 
+import com.example.project.dto.employee.EmployeeRequestDTO;
+import com.example.project.dto.employee.EmployeeResponseDTO;
 import com.example.project.dto.product.ProductRequestDTO;
 import com.example.project.dto.product.ProductResponseDTO;
 import com.example.project.mapper.ProductMapper;
+import com.example.project.model.Employee;
 import com.example.project.model.Product;
 import com.example.project.service.ProductService;
 import jakarta.validation.Valid;
@@ -50,5 +53,12 @@ public class ProductController {
     {
         Product product = productService.addProductToOrder(productId, orderAddress);
         return new ResponseEntity<>(productMapper.toProductResponseDTO(product), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable @Positive Long id, @Valid @RequestBody ProductRequestDTO dto)
+    {
+        Product updatedProduct = productService.updateProduct(id, dto);
+        return ResponseEntity.ok(productMapper.toProductResponseDTO(updatedProduct));
     }
 }
