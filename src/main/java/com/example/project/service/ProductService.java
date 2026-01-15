@@ -3,6 +3,7 @@ package com.example.project.service;
 import com.example.project.dto.product.ProductRequestDTO;
 import com.example.project.mapper.ProductMapper;
 import com.example.project.model.Order;
+import com.example.project.model.OrderStatus;
 import com.example.project.model.Product;
 import com.example.project.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -69,9 +70,46 @@ public class ProductService {
         Product product = getProductByIdOrThrow(productId);
         Order order = orderService.getOrderByAddressOrThrow(orderAddress);
 
+        if (product.getAmount() <= 0) {
+            throw new IllegalStateException("Stock insufficient! Item '" + product.getName() + "' is out of stock.");
+        }
+
+        long countInOrder = order.getProducts().stream()
+                .filter(p -> p.getId().equals(productId))
+                .count();
+
+        if (countInOrder + 1 > product.getAmount()) {
+            throw new IllegalStateException("Cannot add more! You already have " + countInOrder +
+                    " in your cart, and we only have " + product.getAmount() + " in stock.");
+        }
+
         product.getOrders().add(order);
         order.getProducts().add(product);
 
         return productRepository.save(product);
     }
+
+    @Transactional
+    public void reduceStockForOrder(String orderAddress) {
+        Order order = orderService.getOrderByAddressOrThrow(orderAddress);
+
+        if (order.getStatus() == OrderStatus.COMPLETED) {
+            throw new IllegalStateException("Order is already processed and stock has been reduced.");
+        }
+
+        List<Product> productsInOrder = order.getProducts();
+
+        for (Product product : productsInOrder) {
+            if (product.getAmount() > 0) {
+                product.setAmount(product.getAmount() - 1);
+
+                productRepository.save(product);
+            } else {
+                throw new IllegalStateException("Cannot complete order: " + product.getName() + " is out of stock!");
+            }
+        }
+
+        order.setStatus(OrderStatus.COMPLETED);
+    }
+
 }

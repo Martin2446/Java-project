@@ -37,8 +37,6 @@ public class AdminService {
 
         if (dept.getName().equalsIgnoreCase("WAREHOUSE")) {
             newUser.setRole(Role.ADMIN_WAREHOUSE);
-        } else if (dept.getName().equalsIgnoreCase("PRODUCTS")) {
-            newUser.setRole(Role.ADMIN_PRODUCTS);
         }
 
         userRepository.save(newUser);

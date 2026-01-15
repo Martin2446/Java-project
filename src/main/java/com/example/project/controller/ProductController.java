@@ -61,4 +61,11 @@ public class ProductController {
         Product updatedProduct = productService.updateProduct(id, dto);
         return ResponseEntity.ok(productMapper.toProductResponseDTO(updatedProduct));
     }
+
+    @PutMapping("/order/{orderAddress}/process-stock")
+    public ResponseEntity<String> processOrderStock(@PathVariable String orderAddress) {
+        productService.reduceStockForOrder(orderAddress);
+        return ResponseEntity.ok("Stock updated successfully for order: " + orderAddress);
+    }
+
 }

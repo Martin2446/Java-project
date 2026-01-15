@@ -15,13 +15,11 @@ public class OpenApiConfig {
         final String securitySchemeName = "basicAuth";
 
         return new OpenAPI()
-                // 1. Define WHAT kind of security we use (Basic Auth)
                 .components(new Components()
                         .addSecuritySchemes(securitySchemeName,
                                 new SecurityScheme()
                                         .type(SecurityScheme.Type.HTTP)
                                         .scheme("basic")))
-                // 2. Apply this security to EVERY endpoint in the Swagger UI
                 .addSecurityItem(new SecurityRequirement()
                         .addList(securitySchemeName));
     }

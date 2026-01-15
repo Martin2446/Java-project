@@ -25,4 +25,7 @@ public class Order {
 
     @Column(unique = true, nullable = false)
     private String address;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status = OrderStatus.PENDING;
 }
