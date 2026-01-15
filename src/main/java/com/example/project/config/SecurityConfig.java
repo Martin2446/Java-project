@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -30,7 +31,20 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/admin/**").hasAnyRole("GLOBAL_ADMIN", "WAREHOUSE_ADMIN")
+                        .requestMatchers("/admin/**").hasAnyRole("GLOBAL_ADMIN", "ADMIN_WAREHOUSE")
+
+                        .requestMatchers(HttpMethod.POST, "/products/**").hasAnyRole("ADMIN_WAREHOUSE", "GLOBAL_ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/products/**").hasAnyRole("ADMIN_WAREHOUSE", "GLOBAL_ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/products/**").hasAnyRole("ADMIN_WAREHOUSE", "GLOBAL_ADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/products/**").authenticated()
+                        .requestMatchers("/orders/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/products/*/order/*").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/products/process-stock/*").authenticated()
+
+                        .requestMatchers(HttpMethod.GET, "/orders/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/orders/**").authenticated()
+
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)
