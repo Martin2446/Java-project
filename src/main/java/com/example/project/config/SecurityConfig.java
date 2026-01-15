@@ -31,19 +31,19 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/admin/**").hasAnyRole("GLOBAL_ADMIN", "ADMIN_WAREHOUSE")
+                        .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/products/**").hasAnyRole("ADMIN_WAREHOUSE", "GLOBAL_ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/products/**").hasAnyRole("ADMIN_WAREHOUSE", "GLOBAL_ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/products/**").hasAnyRole("ADMIN_WAREHOUSE", "GLOBAL_ADMIN")
-
-                        .requestMatchers(HttpMethod.GET, "/products/**").authenticated()
                         .requestMatchers("/orders/**").authenticated()
+
                         .requestMatchers(HttpMethod.PUT, "/products/*/order/*").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/products/process-stock/*").authenticated()
 
-                        .requestMatchers(HttpMethod.GET, "/orders/**").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/orders/**").authenticated()
+                        .requestMatchers("/orders/**").authenticated()
+
+                        .requestMatchers(HttpMethod.POST, "/admin/register-staff").hasRole("GLOBAL_ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/products/**").hasAnyRole("ADMIN_WAREHOUSE", "GLOBAL_ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/products/**").hasAnyRole("ADMIN_WAREHOUSE", "GLOBAL_ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/products/**").hasAnyRole("ADMIN_WAREHOUSE", "GLOBAL_ADMIN")
 
                         .anyRequest().authenticated()
                 )
